@@ -703,6 +703,8 @@ class VpnAdmin(
         'cert',
         'subnet',
         'ip',
+        'webhook_endpoint',
+        'auth_token',
         'notes',
         'dh',
         'system_context',
