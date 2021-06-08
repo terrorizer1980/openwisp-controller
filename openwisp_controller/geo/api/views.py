@@ -8,14 +8,17 @@ from swapper import load_model
 from openwisp_users.api.mixins import FilterByOrganizationManaged, FilterByParentManaged
 
 from .serializers import (
+    FloorPlanSerializer,
     GeoJsonLocationSerializer,
     LocationDeviceSerializer,
     LocationSerializer,
+    LocationSerializerNew,
 )
 
 Device = load_model('config', 'Device')
 Location = load_model('geo', 'Location')
 DeviceLocation = load_model('geo', 'DeviceLocation')
+FloorPlan = load_model('geo', 'FloorPlan')
 
 
 class DevicePermission(BasePermission):
@@ -92,6 +95,30 @@ class LocationDeviceList(FilterByParentManaged, generics.ListAPIView):
         return qs
 
 
+class FloorPlanListCreateView(generics.ListCreateAPIView):
+    serializer_class = FloorPlanSerializer
+    queryset = FloorPlan.objects.all()
+
+
+class FloorPlanDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = FloorPlanSerializer
+    queryset = FloorPlan.objects.all()
+
+
+class LocationListCreateView(generics.ListCreateAPIView):
+    serializer_class = LocationSerializerNew
+    queryset = Location.objects.all()
+
+
+class LocationDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = LocationSerializerNew
+    queryset = Location.objects.all()
+
+
 device_location = DeviceLocationView.as_view()
 geojson = GeoJsonLocationList.as_view()
 location_device_list = LocationDeviceList.as_view()
+list_floorplan = FloorPlanListCreateView.as_view()
+detail_floorplan = FloorPlanDetailView.as_view()
+list_location = LocationListCreateView.as_view()
+detail_location = LocationDetailView.as_view()
